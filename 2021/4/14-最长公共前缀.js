@@ -26,6 +26,12 @@ const longestCommonPrefix = function (strs) {
 
   let minLength = 0;
 
+  for (let i = 0; i <strs.length; i++) {
+    if (strs[i].length>minLength){
+      minLength=strs[i].length;
+    }
+  }
+
   for (let i = 0; i < minLength; i++) {
 
     let currentChar = strs[0].charAt(i);
@@ -49,3 +55,5 @@ const longestCommonPrefix = function (strs) {
   return commonStr;
 
 };
+
+console.log(longestCommonPrefix(["abc","acbc","bc"]));
