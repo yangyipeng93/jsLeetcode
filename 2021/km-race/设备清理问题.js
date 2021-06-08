@@ -39,34 +39,60 @@
  */
 
 
+
 const readline = require('readline');
-const rl = readline.createInterface({ input: process.stdin });
+const rl = readline.createInterface({input: process.stdin});
+
+const rows = [];
+
 rl.on('line', (input) => {
   if (input === '') {
     return rl.close();
   }
-  const [a] = input.split(' ').map(Number)
-  console.log(rob(a));
+  rows.push(parseInt(input));
+  let k = rows[0];
+  if (k === (rows.length - 1)) {
+    rows.shift()
+    main(rows)
+  }
 });
 
 
-var rob = function (nums) {
-  if (nums === null || nums.length === 0) {
+const main = function (nums) {
+  if (!nums && nums.length === 0) {
     return 0;
   }
   const length = nums.length;
+
   if (length === 1) {
     return nums[0];
   }
 
-  let dp = [];
-  dp[0] = nums[0];
-  dp[1] = Math.max(nums[0], nums[1]);
-  for (let i = 2; i < length; i++) {
-    dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
-  }
+  let resultIndexMap = [];
+  let result = [];
 
-  return dp[length - 1];
+  result[0] = nums[0]
+  result[1] = Math.max(nums[0], nums[1]);
+
+  resultIndexMap[0] = [0];
+  resultIndexMap[1] = [1];
+
+  for (let i = 2; i < length; i++) {
+
+    if (result[i - 2] + nums[i] >= result[i - 1]) {
+      result[i] = result[i - 2] + nums[i];
+      resultIndexMap[i] = resultIndexMap[0].concat([i]);
+
+    } else {
+      result[i] = result[i - 1];
+      resultIndexMap[i] = resultIndexMap[1];
+    }
+
+  }
+  console.log(result[length - 1]);
+  console.log(resultIndexMap[length-1].join(" "))
+
 };
 
-console.log(rob([1,4,5,6]))
+
+// console.log(rob([1,4,5,6]))
