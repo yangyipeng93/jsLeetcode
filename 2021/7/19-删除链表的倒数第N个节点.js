@@ -14,8 +14,40 @@
  */
 const removeNthFromEnd = function (head, n) {
 
-    while (!head.next){
+  let linkLength = getLength();
+  // const dummyNode={
+  //   next:head,
+  //   val:0,
+  // };
+  if (linkLength <= 1) {
+    head = null;
+  }
 
-    }
+  let currentNode=head;
+  let count=1;
+  while (count>linkLength-n){
+    currentNode=currentNode.next;
+    count++
+  }
+
+  currentNode.next=currentNode.next.next;
+
+  return head;
 
 }
+
+
+const getLength = (head) => {
+
+  let size = 0;
+  let current = head;
+
+  while (current) {
+    current = current.next;
+    size++;
+  }
+
+  return size;
+}
+
+
