@@ -1,4 +1,4 @@
-//倒叙
+//合并两个数组
 const merge = (arr1, arr2) => {
   const length1 = arr1.length;
   const length2 = arr2.length;
@@ -33,6 +33,38 @@ const merge = (arr1, arr2) => {
   }
 
   return newArr;
+}
+
+//快速排序 基准移动
+const partition = (arr, left, right) => {
+  let x = arr[left];
+  let i = left;
+  let j = right;
+
+  while(i < j) {
+    // 先从后往前找小的, 没找到继续找
+    while(i < j && arr[j] > x) {
+      j--;
+    }
+    // 找到了，将值填入坑里, a[j]又变成了坑
+    if(i < j) {
+      arr[i] = arr[j];
+    }
+
+    // 然后从前往后找大的，没找到继续找
+    while(i < j && arr[i] < x) {
+      i++;
+    }
+    // 找到了，将值填入之前的坑里
+    if(i < j) {
+      arr[j] = arr[i];
+    }
+  }
+
+  // 将基准值填入坑
+  arr[i] = x;
+
+  return i;
 }
 
 class Solution {
@@ -88,8 +120,22 @@ class Solution {
     return merge(this.mergeSort(leftArr),this.mergeSort(rightArr));
   }
 
+  quickSort = (arr, left, right) => {
+    const length = arr.length;
+    const start = left ;
+    const end = right ;
+
+    if(start < end) {
+      const index = partition(arr, start, end);
+      this.quickSort(arr, start, index - 1); // 调整基准值左边
+      this.quickSort(arr, index + 1, end); // 调整基准值右边
+    }
+
+    return arr;
+  }
+
 
 
 }
 
-console.log(new Solution().mergeSort([3, 2, 1, 4, 5, 2]))
+console.log(new Solution().quickSort([3, 2, 1, 4, 5, 2],0,5))
